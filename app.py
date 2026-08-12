@@ -41,7 +41,7 @@ def estaciones_mas_cercanas(lat, lon, estaciones, limite=3):
 
 
 # ---------- Interfaz (cliente) ----------
-st.set_page_config(page_title="Estaciones Policiales Cercanas", page_icon="🚓")
+st.set_page_config(page_title="Estaciones Policiales Cercanas - Marcio Rivera", page_icon="🚓")
 
 st.title("🚓 Estaciones Policiales Más Cercanas")
 st.write("Ingresa tu ubicación (latitud y longitud) para encontrar las 3 estaciones policiales más cercanas, en cualquier parte de Honduras.")
