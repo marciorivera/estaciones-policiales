@@ -2,6 +2,7 @@ import sqlite3
 from math import radians, sin, cos, sqrt, atan2
 
 import streamlit as st
+from streamlit_geolocation import streamlit_geolocation
 
 DB_PATH = "estaciones.db"
 
@@ -47,11 +48,29 @@ st.write("Ingresa tu ubicación (latitud y longitud) para encontrar las 3 estaci
 
 estaciones = cargar_estaciones()
 
+# ---------- Valores por defecto en sesión ----------
+if "lat" not in st.session_state:
+    st.session_state.lat = 15.5042
+if "lon" not in st.session_state:
+    st.session_state.lon = -88.0250
+
+st.subheader("📍 Usar mi ubicación (GPS)")
+st.caption("Tu navegador te pedirá permiso de ubicación.")
+gps = streamlit_geolocation()
+
+if gps and gps.get("latitude") is not None and gps.get("longitude") is not None:
+    st.session_state.lat = gps["latitude"]
+    st.session_state.lon = gps["longitude"]
+    st.success(f"Ubicación detectada: {gps['latitude']:.6f}, {gps['longitude']:.6f}")
+
+st.divider()
+st.subheader("O ingresa las coordenadas manualmente")
+
 col1, col2 = st.columns(2)
 with col1:
-    lat = st.number_input("Latitud", value=15.5042, format="%.6f")
+    lat = st.number_input("Latitud", value=st.session_state.lat, format="%.6f", key="lat_input")
 with col2:
-    lon = st.number_input("Longitud", value=-88.0250, format="%.6f")
+    lon = st.number_input("Longitud", value=st.session_state.lon, format="%.6f", key="lon_input")
 
 limite = st.slider("Cantidad de resultados a mostrar", min_value=1, max_value=len(estaciones), value=3)
 
