@@ -1,13 +1,21 @@
-import json
+import sqlite3
 from math import radians, sin, cos, sqrt, atan2
 
 import streamlit as st
 
-# ---------- Servicio: cargar datos ----------
+DB_PATH = "estaciones.db"
+
+
+# ---------- Servicio: cargar datos desde la base de datos ----------
 @st.cache_data
 def cargar_estaciones():
-    with open("estaciones.json", "r", encoding="utf-8") as f:
-        return json.load(f)
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    cur = conn.cursor()
+    cur.execute("SELECT nombre, ciudad, lat, lon, telefono FROM estaciones")
+    filas = [dict(row) for row in cur.fetchall()]
+    conn.close()
+    return filas
 
 
 # ---------- Servicio: calcular distancia (Haversine) ----------
@@ -52,7 +60,8 @@ if st.button("Buscar", type="primary"):
 
     st.subheader("Resultados")
     for i, est in enumerate(cercanas, start=1):
-        st.markdown(f"**{i}. {est['nombre']}** — {est['distancia_km']} km")
+        tel = f" · 📞 {est['telefono']}" if est.get("telefono") else ""
+        st.markdown(f"**{i}. {est['nombre']}** ({est['ciudad']}) — {est['distancia_km']} km{tel}")
 
     st.map(
         [{"lat": e["lat"], "lon": e["lon"]} for e in cercanas] + [{"lat": lat, "lon": lon}]
