@@ -13,7 +13,7 @@ def cargar_estaciones():
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     cur = conn.cursor()
-    cur.execute("SELECT nombre, ciudad, lat, lon, telefono FROM estaciones")
+    cur.execute("SELECT nombre, ciudad, departamento, lat, lon, telefono FROM estaciones")
     filas = [dict(row) for row in cur.fetchall()]
     conn.close()
     return filas
@@ -44,7 +44,7 @@ def estaciones_mas_cercanas(lat, lon, estaciones, limite=3):
 st.set_page_config(page_title="Estaciones Policiales Cercanas", page_icon="🚓")
 
 st.title("🚓 Estaciones Policiales Más Cercanas")
-st.write("Ingresa tu ubicación (latitud y longitud) para encontrar las 3 estaciones policiales más cercanas.")
+st.write("Ingresa tu ubicación (latitud y longitud) para encontrar las 3 estaciones policiales más cercanas, en cualquier parte de Honduras.")
 
 estaciones = cargar_estaciones()
 
@@ -80,7 +80,7 @@ if st.button("Buscar", type="primary"):
     st.subheader("Resultados")
     for i, est in enumerate(cercanas, start=1):
         tel = f" · 📞 {est['telefono']}" if est.get("telefono") else ""
-        st.markdown(f"**{i}. {est['nombre']}** ({est['ciudad']}) — {est['distancia_km']} km{tel}")
+        st.markdown(f"**{i}. {est['nombre']}** ({est['ciudad']}, {est['departamento']}) — {est['distancia_km']} km{tel}")
 
     st.map(
         [{"lat": e["lat"], "lon": e["lon"]} for e in cercanas] + [{"lat": lat, "lon": lon}]
