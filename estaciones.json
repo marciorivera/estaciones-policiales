@@ -1,0 +1,8 @@
+[
+  { "nombre": "Estación Policial Centro", "lat": 15.5042, "lon": -88.0250 },
+  { "nombre": "Estación Policial Chamelecón", "lat": 15.4700, "lon": -88.0450 },
+  { "nombre": "Estación Policial Río de Piedras", "lat": 15.5350, "lon": -88.0100 },
+  { "nombre": "Estación Policial El Merendón", "lat": 15.5100, "lon": -88.0600 },
+  { "nombre": "Estación Policial Sur", "lat": 15.4800, "lon": -88.0150 },
+  { "nombre": "Estación Policial Bermejo", "lat": 15.5250, "lon": -87.9950 }
+]
